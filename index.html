@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE BOYS CREATION — Create. Evolve. Dominate.</title>
+<meta name="description" content="The Boys Creation — a premium creative collective for designers, editors, photographers, AI builders and freelancers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          base: '#050505',
+          'electric': '#3B82F6',
+          'emerald': '#22C55E',
+          'muted': 'rgba(255,255,255,0.6)',
+          'line': 'rgba(255,255,255,0.10)',
+        },
+        fontFamily: {
+          sans: ['"Instrument Sans"', 'Inter', 'system-ui', 'sans-serif'],
+          mono: ['"Fragment Mono"', 'JetBrains Mono', 'monospace'],
+          display: ['"Fraunces"', '"Instrument Sans"', 'serif'],
+        },
+        boxShadow: {
+          'glow-blue': '0 0 40px rgba(59,130,246,0.28), 0 0 80px rgba(59,130,246,0.1)',
+          'glow-green': '0 0 40px rgba(34,197,94,0.22)',
+        }
+      }
+    }
+  }
+</script>
+<style type="text/tailwindcss">
+  :root {
+    --bg: #050505;
+    --electric: #3B82F6;
+    --emerald: #22C55E;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #050505;
+    color: #fff;
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  /* Glass card */
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,0.061) 0%, rgba(255,255,255,0.028) 100%);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .glass-soft {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .hairline { border-color: rgba(255,255,255,0.10); }
+  /* Hero video overlay - dark gradient overlay black/60 → transparent → black/70 */
+  .hero-vignette {
+    background: radial-gradient(1200px 700px at 72% 55%, rgba(8,10,20,0.0) 0%, rgba(5,5,5,0.22) 42%, rgba(5,5,5,0.74) 100%),
+                linear-gradient(180deg, rgba(5,5,5,0.68) 0%, rgba(5,5,5,0.10) 34%, rgba(5,5,5,0.22) 68%, rgba(5,5,5,0.88) 100%);
+  }
+  /* Grain */
+  .grain::before {
+    content: '';
+    position: fixed;
+    inset: -50px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.036;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: soft-light;
+  }
+  /* Hero headline */
+  .hero-word {
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.885;
+    font-size: clamp(3.4rem, 11.8vw, 10.5rem);
+  }
+  .hero-glow {
+    text-shadow: 0 0 28px rgba(138, 180, 255, 0.11), 0 2px 30px rgba(0,0,0,0.5);
+  }
+  .hero-dot {
+    color: #3B82F6;
+    text-shadow: 0 0 22px rgba(59,130,246,0.65);
+  }
+  /* Animated neon border button */
+  .btn-neon {
+    position: relative;
+    isolation: isolate;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-neon::before {
+    content:'';
+    position:absolute; inset:-1px;
+    background: linear-gradient(100deg, #3B82F6, #22C55E, #3B82F6);
+    background-size: 200% 200%;
+    border-radius: inherit;
+    z-index: -2;
+    opacity:.95;
+    filter: blur(0px);
+  }
+  .btn-neon::after {
+    content:'';
+    position:absolute; inset:1.4px;
+    border-radius: inherit;
+    background: #0b0d13;
+    z-index:-1;
+  }
+  .btn-neon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 40px rgba(59,130,246,0.22), 0 0 36px rgba(34,197,94,0.12);
+  }
+  .btn-neon:hover::before { animation: borderShift 2.8s linear infinite; }
+  @keyframes borderShift { to { background-position: 200% 0; } }
+
+  .btn-ghost-glass {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(14px);
+    transition: all .24s ease;
+  }
+  .btn-ghost-glass:hover {
+    background: rgba(255,255,255,0.078);
+    border-color: rgba(255,255,255,0.28);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    transform: translateY(-1px);
+  }
+
+  /* Magnetic hover helper */
+  .magnet-wrap { transition: transform .18s ease-out; }
+
+  /* Community cards glow edge */
+  .card-glow-blue::before,
+  .card-glow-green::before {
+    content:'';
+    position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    opacity:.72;
+  }
+  .card-glow-blue::before {
+    background: radial-gradient(500px 220px at 85% -10%, rgba(59,130,246,0.085), transparent 60%);
+  }
+  .card-glow-green::before {
+    background: radial-gradient(500px 220px at 85% -10%, rgba(34,197,94,0.075), transparent 60%);
+  }
+
+  /* Scroll reveal base */
+  .reveal { opacity: 0; transform: translateY(22px); filter: blur(7px); }
+  .reveal.in { opacity:1; transform:none; filter:blur(0); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1), filter .7s ease; }
+
+  /* Mouse aura */
+  #mouse-aura {
+    position: fixed;
+    width: 640px; height: 640px;
+    left:0; top:0;
+    pointer-events:none;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(59,130,246,0.065) 0%, rgba(34,197,94,0.022) 35%, transparent 68%);
+    opacity: .95;
+    mix-blend-mode: screen;
+    transition: opacity .3s;
+  }
+  @media (max-width: 900px) { #mouse-aura { display:none; } }
+
+  /* Cosmic silhouette (homage to the Alien X video background) */
+  .cosmic-entity {
+    position: absolute;
+    right: -5%;
+    top: 9%;
+    width: min(720px, 54vw);
+    opacity: 0.20;
+    filter: blur(0.15px) contrast(1.06);
+    pointer-events: none;
+    user-select: none;
+    mask-image: radial-gradient(120% 100% at 55% 40%, black 32%, transparent 72%);
+    -webkit-mask-image: radial-gradient(120% 100% at 55% 40%, black 32%, transparent 72%);
+  }
+  @media (max-width: 1024px) { .cosmic-entity { opacity: .13; right: -15%; top: 16%; width: 84vw;} }
+
+  /* Nav blur */
+  .nav-blur {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: linear-gradient(180deg, rgba(5,5,5,0.82), rgba(5,5,5,0.54));
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* Minimal ticker */
+  .ticker-track {
+    animation: ticker 42s linear infinite;
+  }
+  @keyframes ticker { from { transform: translateX(0);} to { transform: translateX(-50%);} }
+
+  /* Section label */
+  .eyebrow { font-family: "Fragment Mono", monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,0.52); }
+
+  /* Hide scrollbar aesthetic */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #050505; }
+  ::-webkit-scrollbar-thumb { background: #1c1f27; border-radius: 8px; }
+</style>
+</head>
+<body class="grain relative">
+  <!-- Mouse glow aura -->
+  <div id="mouse-aura"></div>
+
+  <!-- NAV -->
+  <header id="siteNav" class="fixed top-0 left-0 right-0 z-[60] transition-all duration-300">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12">
+      <div class="h-[76px] md:h-[84px] flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-9 h-9 rounded-full glass-soft flex items-center justify-center relative overflow-hidden">
+            <div class="w-[15px] h-[15px] rounded-[4px] rotate-45" style="background: linear-gradient(135deg, #3B82F6, #22C55E); box-shadow: 0 0 18px rgba(59,130,246,0.45);"></div>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[13.8px] tracking-[0.14em] font-600 text-white/95" style="font-family:'Fragment Mono', monospace;">THE BOYS</div>
+            <div class="text-[11px] tracking-[0.22em] text-white/45 -mt-0.5" style="font-family:'Fragment Mono', monospace;">CREATION</div>
+          </div>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden lg:flex items-center gap-9 text-[14px] text-white/70">
+          <a href="#home" class="hover:text-white transition">Home</a>
+          <a href="#community" class="hover:text-white transition">Community</a>
+          <a href="#work" class="hover:text-white transition">Portfolio</a>
+          <a href="#resources" class="hover:text-white transition">Resources</a>
+          <a href="#contact" class="hover:text-white transition">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="hidden sm:inline-flex text-[13.5px] px-4 py-2 rounded-full glass-soft text-white/85 hover:text-white transition">Join</a>
+          <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-full glass-soft flex items-center justify-center text-white/80" aria-label="Open menu">
+            <i data-lucide="menu" class="w-[18px] h-[18px]"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t border-white/[0.08] nav-blur">
+      <div class="max-w-[1200px] mx-auto px-6 py-5 flex flex-col gap-4 text-[15px] text-white/80">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#community" class="mobile-link">Community</a>
+        <a href="#work" class="mobile-link">Portfolio</a>
+        <a href="#resources" class="mobile-link">Resources</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+        <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="mt-1 inline-flex w-max px-4 py-2 rounded-full bg-white text-[#0b0d13] text-[13.5px] font-600">Join WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="relative min-h-[100svh] flex items-center overflow-hidden">
+    <!-- VIDEO BACKGROUND -->
+    <!-- 
+      IMPORTANT — HERO VIDEO
+      This is where your uploaded cosmic / Alien X video goes.
+      Replace the <source src="..."> below with your own file, e.g.:
+      <source src="/your-alienx-video.mp4" type="video/mp4">
+      
+      The UI (gradient overlay, glass, type) is already tuned to match a dark, cinematic, space / sci-fi background
+      like your Alien X clip. Keep it dark and cosmic for best results.
+    -->
+    <div class="absolute inset-0 z-0">
+      <video id="heroVideo" class="absolute w-full h-full object-cover" autoplay muted loop playsinline poster="">
+        <!-- PLACE YOUR UPLOADED VIDEO HERE -->
+        <source src="https://videos.pexels.com/video-files/1851190/1851190-hd_1920_1080_25fps.mp4" type="video/mp4">
+        <!-- Fallback: if your video fails to load, a canvas starfield will render instead -->
+      </video>
+      <!-- Fallback cosmic canvas (matches Alien X space vibe) -->
+      <canvas id="cosmicCanvas" class="absolute inset-0 w-full h-full"></canvas>
+      <!-- Dark gradient overlay: black/60 → transparent → black/70 for perfect text readability -->
+      <div class="absolute inset-0 hero-vignette"></div>
+      <!-- Subtle blue/green nebula glow -->
+      <div class="absolute -top-24 -right-24 w-[520px] h-[520px] rounded-full blur-[120px] opacity-[0.14]" style="background: radial-gradient(circle, #3B82F6 0%, transparent 70%);"></div>
+      <div class="absolute bottom-[-120px] left-[-80px] w-[440px] h-[440px] rounded-full blur-[110px] opacity-[0.11]" style="background: radial-gradient(circle, #22C55E 0%, transparent 70%);"></div>
+    </div>
+
+    <!-- Subtle cosmic entity silhouette, right side (homage to your Alien X video) -->
+    <div class="cosmic-entity" aria-hidden="true">
+      <svg viewBox="0 0 780 980" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+        <defs>
+          <radialGradient id="starField" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(390 460) scale(440)">
+            <stop stop-color="#dbeafe" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#0b1022" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glowSoft"><feGaussianBlur stdDeviation="1.6"/></filter>
+        </defs>
+        <!-- Silhouette base -->
+        <g opacity="0.92">
+          <!-- Head & horns -->
+          <ellipse cx="392" cy="166" rx="58" ry="61" fill="#05070f"/>
+          <path d="M356 122 C330 86 318 62 342 86 C362 106 356 122 356 122Z" fill="#05070f"/>
+          <path d="M428 122 C454 86 466 62 442 86 C422 106 428 122 428 122Z" fill="#05070f"/>
+          <!-- Eyes -->
+          <ellipse cx="371" cy="163" rx="12" ry="7" fill="#e9f4ff" filter="url(#glowSoft)"/>
+          <ellipse cx="412" cy="163" rx="12" ry="7" fill="#e9f4ff" filter="url(#glowSoft)"/>
+          <!-- Torso / shoulders -->
+          <path d="M332 205 C270 236 236 256 218 276 C268 296 312 323 332 345 L332 205Z" fill="#05070f"/>
+          <path d="M452 205 C516 236 550 253 572 274 C525 295 476 322 452 343 L452 205Z" fill="#05070f"/>
+          <path d="M321 226 C295 272 274 350 268 462 C278 585 298 710 318 832 L463 832 C483 709 500 585 510 461 C506 348 485 271 459 226 C435 197 343 197 321 226Z" fill="#05070f"/>
+          <!-- Right arm reaching forward -->
+          <path d="M216 276 C110 244 44 258 20 298 C62 313 90 332 124 360 C86 338 46 337 22 362 C57 374 94 398 125 420 C88 398 54 407 28 430 C64 442 102 460 136 468 C105 447 81 457 68 486 C108 486 140 473 166 447 C194 410 224 362 264 336 L216 276Z" fill="#05070f"/>
+          <!-- Left arm down -->
+          <path d="M572 274 C614 316 640 376 644 420 C626 406 606 398 582 404 C604 424 614 450 612 470 C594 456 576 452 560 464 C574 485 576 504 566 514 C548 494 528 474 512 452 L486 352 L572 274Z" fill="#05070f"/>
+          <!-- Chest emblem / starfield cutout -->
+          <circle cx="392" cy="324" r="33" fill="url(#starField)" opacity=".95"/>
+        </g>
+        <!-- Star speckles across body -->
+        <g fill="#cfe6ff" opacity=".9">
+          <circle cx="306" cy="298" r="1.2"/><circle cx="344" cy="264" r="1"/>
+          <circle cx="410" cy="248" r="1"/><circle cx="446" cy="296" r="1.1"/>
+          <circle cx="364" cy="406" r="1"/><circle cx="426" cy="418" r=".95"/>
+          <circle cx="336" cy="508" r="1"/><circle cx="418" cy="564" r="1"/>
+          <circle cx="368" cy="630" r=".9"/><circle cx="408" cy="698" r="1"/>
+          <circle cx="146" cy="348" r="1.1"/><circle cx="92" cy="372" r=".9"/>
+          <circle cx="594" cy="352" r=".95"/>
+        </g>
+        <!-- Galaxy in palm -->
+        <g opacity=".98">
+          <circle cx="138" cy="370" r="28" fill="none" stroke="#dfe9ff" stroke-opacity=".18"/>
+          <circle cx="138" cy="370" r="19" fill="none" stroke="#dfe9ff" stroke-opacity=".30"/>
+          <circle cx="138" cy="370" r="9.5" fill="#f4f0d6" opacity=".95"/>
+          <g stroke="#d9e6ff" stroke-opacity=".57" fill="none">
+            <path d="M138 370 C148 362, 155 350, 150 343"/>
+            <path d="M138 370 C126 376, 118 387, 124 395"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="relative z-20 w-full max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12 pt-[120px] pb-24 md:pb-28">
+      <div class="max-w-[980px]">
+        <!-- Live badge -->
+        <div class="flex items-center gap-3 mb-8 md:mb-10 opacity-90">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald shadow-glow-green"></span>
+          <span class="eyebrow">Creators Collective • Est. 2024 • India</span>
+        </div>
+
+        <!-- Big headline CREATE. EVOLVE. DOMINATE. -->
+        <h1 class="hero-glow select-none">
+          <span class="block hero-word" id="hw1">CREATE<span class="hero-dot">.</span></span>
+          <span class="block hero-word" id="hw2">EVOLVE<span class="hero-dot">.</span></span>
+          <span class="block hero-word" id="hw3">DOMINATE<span class="hero-dot">.</span></span>
+        </h1>
+
+        <p class="mt-7 md:mt-9 max-w-[620px] text-[17px] md:text-[18.5px] leading-relaxed text-white/[0.70]">
+          Welcome to The Boys Creation — a community where creators, designers, editors, photographers, AI enthusiasts, and freelancers collaborate, learn, and grow together.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-9 md:mt-11 flex flex-col sm:flex-row gap-3.5 sm:gap-4">
+          <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="magnet-wrap">
+            <span class="btn-neon inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-[15px] text-[14.5px] font-600 tracking-wide text-white" style="font-family:'Instrument Sans',sans-serif;">
+              JOIN WHATSAPP COMMUNITY
+              <i data-lucide="arrow-up-right" class="w-4 h-4 opacity-90"></i>
+            </span>
+          </a>
+          <a href="https://www.instagram.com/boys_creation26?igsh=bXcxMWd5aHY5a2tj" target="_blank" rel="noopener" class="magnet-wrap">
+            <span class="btn-ghost-glass inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-[15px] text-[14.5px] font-600 text-white/90">
+              <i data-lucide="instagram" class="w-[16px] h-[16px]"></i>
+              FOLLOW INSTAGRAM
+            </span>
+          </a>
+        </div>
+
+        <!-- Micro trust row -->
+        <div class="mt-10 flex flex-wrap gap-6 md:gap-10 text-[12.5px] text-white/45" style="font-family:'Fragment Mono',monospace;">
+          <span>2.4K+ creators</span>
+          <span>•</span>
+          <span>Daily critiques</span>
+          <span>•</span>
+          <span>Jobs & collabs</span>
+          <span>•</span>
+          <span>AI lab</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom fade to base -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 z-10 pointer-events-none" style="background: linear-gradient(180deg, rgba(5,5,5,0) 0%, #050505 100%);"></div>
+
+    <!-- Scroll hint -->
+    <div class="absolute bottom-8 right-6 md:right-12 z-20 text-[11px] text-white/38 hidden md:flex items-center gap-3" style="font-family:'Fragment Mono', monospace;">
+      SCROLL
+      <span class="w-8 h-[1px] bg-white/20"></span>
+    </div>
+  </section>
+
+  <!-- ticker / proof bar -->
+  <section class="relative z-30 border-y border-white/[0.08] bg-[#070708]">
+    <div class="overflow-hidden py-[16px]">
+      <div class="ticker-track flex whitespace-nowrap opacity-[0.58] text-[11.5px] tracking-wider" style="font-family:'Fragment Mono', monospace;">
+        <div class="flex gap-12 pr-12">
+          <span>EDITORS</span><span>•</span>
+          <span>DESIGNERS</span><span>•</span>
+          <span>PHOTOGRAPHERS</span><span>•</span>
+          <span>AI ARTISTS</span><span>•</span>
+          <span>VIDEO EDITORS</span><span>•</span>
+          <span>3D / MOTION</span><span>•</span>
+          <span>FREELANCERS</span><span>•</span>
+          <span>BRAND BUILDERS</span><span>•</span>
+        </div>
+        <div class="flex gap-12 pr-12" aria-hidden="true">
+          <span>EDITORS</span><span>•</span>
+          <span>DESIGNERS</span><span>•</span>
+          <span>PHOTOGRAPHERS</span><span>•</span>
+          <span>AI ARTISTS</span><span>•</span>
+          <span>VIDEO EDITORS</span><span>•</span>
+          <span>3D / MOTION</span><span>•</span>
+          <span>FREELANCERS</span><span>•</span>
+          <span>BRAND BUILDERS</span><span>•</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY SECTION -->
+  <section id="community" class="relative py-[96px] md:py-[138px]">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 md:mb-16 reveal">
+        <div>
+          <div class="eyebrow mb-4">/ Community Hubs</div>
+          <h2 class="text-[42px] md:text-[60px] leading-[0.95] tracking-[-0.035em] font-600">Where the collective lives.</h2>
+        </div>
+        <p class="max-w-[400px] text-white/60 text-[16px] leading-relaxed">
+          Real-time feedback, brief drops, jobs, and collabs. Zero noise, all signal.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-7">
+        <!-- Instagram Card -->
+        <div class="glass rounded-[28px] p-[28px] md:p-10 relative overflow-hidden card-glow-blue reveal">
+          <div class="flex items-start justify-between mb-14">
+            <div class="w-12 h-12 rounded-[16px] glass-soft flex items-center justify-center">
+              <i data-lucide="instagram" class="w-[22px] h-[22px] text-white/90"></i>
+            </div>
+            <span class="text-[11px] px-3 py-[6px] rounded-full glass-soft text-white/55" style="font-family:'Fragment Mono',monospace;">@boys_creation26</span>
+          </div>
+          <h3 class="text-[30px] md:text-[34px] tracking-[-0.022em] font-600 mb-3">Instagram</h3>
+          <p class="text-white/60 max-w-[420px] leading-relaxed mb-10">
+            Daily drops, breakdowns, featured creators, and portfolio spotlights. The public face of the collective.
+          </p>
+          <div class="flex flex-wrap gap-8 text-[13px] text-white/45 mb-10" style="font-family:'Fragment Mono',monospace;">
+            <span>Reels</span>
+            <span>Case Studies</span>
+            <span>Creator Features</span>
+          </div>
+          <a href="https://www.instagram.com/boys_creation26?igsh=bXcxMWd5aHY5a2tj" target="_blank" rel="noopener" class="magnet-wrap inline-block">
+            <span class="inline-flex items-center gap-2 px-5 py-3 rounded-full glass-soft text-[13.5px] font-600 text-white hover:bg-white/[0.09] transition">
+              FOLLOW INSTAGRAM
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </span>
+          </a>
+          <div class="absolute -right-6 -bottom-10 w-[210px] h-[210px] rounded-full blur-[75px] opacity-[0.19]" style="background: radial-gradient(circle, #3B82F6, transparent 70%);"></div>
+        </div>
+
+        <!-- WhatsApp Card -->
+        <div class="glass rounded-[28px] p-[28px] md:p-10 relative overflow-hidden card-glow-green reveal" style="transition-delay:.07s">
+          <div class="flex items-start justify-between mb-14">
+            <div class="w-12 h-12 rounded-[16px] glass-soft flex items-center justify-center">
+              <i data-lucide="messages-square" class="w-[22px] h-[22px] text-white/90"></i>
+            </div>
+            <span class="text-[11px] px-3 py-[6px] rounded-full glass-soft text-white/55" style="font-family:'Fragment Mono',monospace;">Live • 2.4k members</span>
+          </div>
+          <h3 class="text-[30px] md:text-[34px] tracking-[-0.022em] font-600 mb-3">WhatsApp Community</h3>
+          <p class="text-white/60 max-w-[420px] leading-relaxed mb-10">
+            Critiques in minutes, paid gigs, collab calls, AI tool testing. This is where work actually happens.
+          </p>
+          <div class="flex flex-wrap gap-8 text-[13px] text-white/45 mb-10" style="font-family:'Fragment Mono',monospace;">
+            <span>Jobs</span>
+            <span>Feedback</span>
+            <span>Collabs</span>
+          </div>
+          <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="magnet-wrap inline-block">
+            <span class="inline-flex items-center gap-2 px-5 py-3 rounded-full text-[#07120d] font-700 text-[13.5px]" style="background: linear-gradient(135deg, #22C55E, #3ddb76); box-shadow: 0 8px 28px rgba(34,197,94,0.22);">
+              JOIN WHATSAPP COMMUNITY
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </span>
+          </a>
+          <div class="absolute -right-6 -bottom-10 w-[210px] h-[210px] rounded-full blur-[75px] opacity-[0.18]" style="background: radial-gradient(circle, #22C55E, transparent 70%);"></div>
+        </div>
+      </div>
+
+      <!-- Three mini perks -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-[14px] mt-6 md:mt-7 text-[14px]">
+        <div class="glass-soft rounded-[20px] px-6 py-5 flex items-center gap-3 text-white/70 reveal"><i data-lucide="zap" class="w-4 h-4 text-electric/90"></i> Daily prompt & critique threads</div>
+        <div class="glass-soft rounded-[20px] px-6 py-5 flex items-center gap-3 text-white/70 reveal"><i data-lucide="briefcase" class="w-4 h-4 text-emerald/90"></i> Freelance briefs & paid gigs</div>
+        <div class="glass-soft rounded-[20px] px-6 py-5 flex items-center gap-3 text-white/70 reveal"><i data-lucide="sparkles" class="w-4 h-4 text-white/70"></i> AI tools, LUTs, project files</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO / WORK -->
+  <section id="work" class="relative py-[88px] md:py-[118px] border-t border-white/[0.07] bg-[#060609]">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12">
+      <div class="flex items-center justify-between flex-wrap gap-6 mb-10 md:mb-14 reveal">
+        <div>
+          <div class="eyebrow mb-3">/ Portfolio</div>
+          <h2 class="text-[38px] md:text-[54px] tracking-[-0.03em] font-600 leading-[0.97]">Recent collective work</h2>
+        </div>
+        <div class="text-[13.5px] text-white/50">Edit • Design • Photo • Motion • AI</div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <!-- Card 1 -->
+        <div class="glass rounded-[24px] overflow-hidden reveal">
+          <div class="h-[226px] relative bg-[#0b0d15] flex items-center justify-center">
+            <div class="w-[88%] h-[68%] rounded-xl" style="background: linear-gradient(135deg, rgba(59,130,246,0.17), rgba(34,197,94,0.10)); border:1px solid rgba(255,255,255,0.075);"></div>
+            <span class="absolute top-4 left-4 text-[11px] px-2.5 py-1 rounded-full glass-soft text-white/60" style="font-family:'Fragment Mono',monospace;">BRAND ID</span>
+          </div>
+          <div class="px-6 py-5">
+            <div class="font-600">Velox Systems</div>
+            <div class="text-white/55 text-[13.5px] mt-1">Brand / Motion</div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="glass rounded-[24px] overflow-hidden reveal" style="transition-delay:.06s">
+          <div class="h-[226px] relative bg-[#0b0d14] flex items-center justify-center">
+            <div class="text-[11px] text-white/32 tracking-widest" style="font-family:'Fragment Mono', monospace;">EDITORIAL — 04:17</div>
+            <span class="absolute top-4 left-4 text-[11px] px-2.5 py-1 rounded-full glass-soft text-white/60" style="font-family:'Fragment Mono',monospace;">EDIT</span>
+          </div>
+          <div class="px-6 py-5">
+            <div class="font-600">Astra Campaign Cut</div>
+            <div class="text-white/55 text-[13.5px] mt-1">Cinematic Edit / Grade</div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="glass rounded-[24px] overflow-hidden reveal" style="transition-delay:.12s">
+          <div class="h-[226px] relative bg-[#0b0d15] flex items-center justify-center">
+            <div class="w-20 h-20 rounded-full" style="background: radial-gradient(circle, rgba(59,130,246,0.26), transparent 70%);"></div>
+            <span class="absolute top-4 left-4 text-[11px] px-2.5 py-1 rounded-full glass-soft text-white/60" style="font-family:'Fragment Mono',monospace;">AI / CGI</span>
+          </div>
+          <div class="px-6 py-5">
+            <div class="font-600">Cosmic Product Lab</div>
+            <div class="text-white/55 text-[13.5px] mt-1">AI Visuals / 3D</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 text-white/45 text-[13.5px]">Want your work featured? Post it in the WhatsApp critique thread.</div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources" class="relative py-[92px] md:py-[120px]">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12 grid lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+      <div class="lg:col-span-5 reveal">
+        <div class="eyebrow mb-4">/ Resources</div>
+        <h2 class="text-[38px] md:text-[52px] tracking-[-0.03em] font-600 leading-[0.98] mb-5">Toolkits that actually ship work.</h2>
+        <p class="text-white/60 leading-relaxed max-w-[420px]">Curated by the collective. LUTs, type systems, AI prompts, Premiere templates, Notion brief kits — free for members.</p>
+        <div class="mt-8 flex gap-3">
+          <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="text-[13.5px] px-4 py-2.5 rounded-full glass-soft hover:bg-white/[0.08] transition text-white/85">Get access →</a>
+        </div>
+      </div>
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+        <div class="glass-soft rounded-[20px] px-5 py-5 reveal">
+          <div class="text-[11px] text-white/45 mb-2" style="font-family:'Fragment Mono',monospace;">01</div>
+          <div class="font-600 mb-1">Cinematic LUT Pack v3</div>
+          <div class="text-white/55 text-[13.5px]">For Davinci / Premiere</div>
+        </div>
+        <div class="glass-soft rounded-[20px] px-5 py-5 reveal">
+          <div class="text-[11px] text-white/45 mb-2" style="font-family:'Fragment Mono',monospace;">02</div>
+          <div class="font-600 mb-1">Creator Rate Card Kit</div>
+          <div class="text-white/55 text-[13.5px]">Pricing + proposals</div>
+        </div>
+        <div class="glass-soft rounded-[20px] px-5 py-5 reveal">
+          <div class="text-[11px] text-white/45 mb-2" style="font-family:'Fragment Mono',monospace;">03</div>
+          <div class="font-600 mb-1">AI Image Prompts</div>
+          <div class="text-white/55 text-[13.5px]">340+ production prompts</div>
+        </div>
+        <div class="glass-soft rounded-[20px] px-5 py-5 reveal">
+          <div class="text-[11px] text-white/45 mb-2" style="font-family:'Fragment Mono',monospace;">04</div>
+          <div class="font-600 mb-1">Reel Cut Templates</div>
+          <div class="text-white/55 text-[13.5px]">Premiere / After Effects</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="contact" class="relative py-[88px] md:py-[116px] border-t border-white/[0.08]">
+    <div class="max-w-[900px] mx-auto px-6 md:px-10 text-center">
+      <div class="glass rounded-[30px] px-8 md:px-16 py-14 md:py-[76px] relative overflow-hidden reveal">
+        <div class="absolute -top-20 right-1/2 translate-x-1/2 w-[420px] h-[420px] rounded-full blur-[120px] opacity-[0.13]" style="background: radial-gradient(circle, #3B82F6, #22C55E 60%, transparent);"></div>
+        <h2 class="relative text-[38px] md:text-[60px] tracking-[-0.032em] leading-[0.95] font-600">Build with the collective.</h2>
+        <p class="relative text-white/63 max-w-[540px] mx-auto mt-5 text-[16.5px]">If you're a designer, editor, photographer, AI builder, or freelancer who cares about craft — you'll fit right in.</p>
+        <div class="relative mt-9 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="magnet-wrap">
+            <span class="btn-neon inline-flex items-center justify-center gap-2 rounded-full px-7 py-[14px] text-[14px] font-600 text-white">JOIN WHATSAPP COMMUNITY</span>
+          </a>
+          <a href="https://www.instagram.com/boys_creation26?igsh=bXcxMWd5aHY5a2tj" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full px-7 py-[14px] text-[14px] font-600 btn-ghost-glass text-white/90">FOLLOW INSTAGRAM</a>
+        </div>
+        <div class="relative mt-6 text-[12px] text-white/42" style="font-family:'Fragment Mono', monospace;">Free to join • No spam • Portfolio review on entry</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/[0.08] py-12 text-[13.5px] text-white/48">
+    <div class="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-full glass-soft flex items-center justify-center">
+          <div class="w-[11px] h-[11px] rounded-[3px] rotate-45" style="background: linear-gradient(135deg, #3B82F6, #22C55E);"></div>
+        </div>
+        <span style="font-family:'Fragment Mono', monospace;" class="tracking-wider text-white/66">THE BOYS CREATION • 2026</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-6 md:gap-9 text-white/52">
+        <a href="#community" class="hover:text-white transition">Community</a>
+        <a href="#work" class="hover:text-white transition">Portfolio</a>
+        <a href="#resources" class="hover:text-white transition">Resources</a>
+        <a href="https://www.instagram.com/boys_creation26?igsh=bXcxMWd5aHY5a2tj" target="_blank" rel="noopener" class="hover:text-white transition">Instagram</a>
+        <a href="https://chat.whatsapp.com/LVzQd0Q03nn1KX4t1YMsgc" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp</a>
+      </div>
+      <div class="text-white/36 text-[12px]" style="font-family:'Fragment Mono', monospace;">IND • UTC+5:30</div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Nav blur on scroll
+    const nav = document.getElementById('siteNav');
+    const onScrollNav = () => {
+      if(window.scrollY > 24) {
+        nav.classList.add('nav-blur');
+      } else {
+        nav.classList.remove('nav-blur');
+      }
+    };
+    onScrollNav();
+    window.addEventListener('scroll', onScrollNav, { passive: true });
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-link').forEach(a=>{
+      a.addEventListener('click', ()=> mobileMenu.classList.add('hidden'))
+    });
+
+    // Hero headline animation (Framer-Motion style: fade up + blur)
+    window.addEventListener('load', () => {
+      if(window.gsap){
+        gsap.from('#hw1', { y: 34, opacity: 0, filter: 'blur(8px)', duration: .92, ease: 'power3.out', delay: .18 });
+        gsap.from('#hw2', { y: 34, opacity: 0, filter: 'blur(8px)', duration: .92, ease: 'power3.out', delay: .33 });
+        gsap.from('#hw3', { y: 34, opacity: 0, filter: 'blur(8px)', duration: .92, ease: 'power3.out', delay: .48 });
+      }
+    });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+    // Mouse aura follower
+    const aura = document.getElementById('mouse-aura');
+    let mx = window.innerWidth/2, my = window.innerHeight/2;
+    let ax = mx, ay = my;
+    window.addEventListener('mousemove', (e)=>{ mx = e.clientX; my = e.clientY; aura.style.opacity = '1'; }, {passive:true});
+    function auraLoop(){
+      ax += (mx - ax) * 0.075;
+      ay += (my - ay) * 0.075;
+      aura.style.transform = `translate(${ax - 320}px, ${ay - 320}px)`;
+      requestAnimationFrame(auraLoop);
+    }
+    auraLoop();
+
+    // Magnetic buttons
+    document.querySelectorAll('.magnet-wrap').forEach(wrap=>{
+      const inner = wrap.firstElementChild;
+      wrap.addEventListener('mousemove', (e)=>{
+        const r = wrap.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width/2) * 0.32;
+        const y = (e.clientY - r.top - r.height/2) * 0.38;
+        inner.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      wrap.addEventListener('mouseleave', ()=>{
+        inner.style.transform = 'translate(0,0)';
+      });
+    });
+
+    // Cosmic fallback canvas (matches Alien X / space video vibe)
+    // If the hero <video> fails to load, this starfield runs.
+    (function cosmicFallback(){
+      const video = document.getElementById('heroVideo');
+      const canvas = document.getElementById('cosmicCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let w, h, stars = [];
+      function resize(){
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+        stars = Array.from({length: Math.floor(w*h/4800)}, ()=> ({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: Math.random()*1.35 + .18,
+          o: Math.random()*.7 + .22,
+          s: Math.random()*0.45 + 0.18
+        }));
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      let t=0;
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        // subtle nebula
+        const g = ctx.createRadialGradient(w*0.72, h*0.48, 40, w*0.72, h*0.48, Math.max(w,h)*0.72);
+        g.addColorStop(0, 'rgba(62,120,255,0.053)');
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,w,h);
+        // stars
+        for(const st of stars){
+          const tw = Math.sin(t*0.012 * st.s + st.x)*0.28 + 0.72;
+          ctx.fillStyle = `rgba(227,240,255,${st.o * tw})`;
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+        t++;
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      // Hide canvas if video plays successfully
+      video.addEventListener('playing', ()=> { canvas.style.display = 'none'; }, { once: true });
+      video.addEventListener('error', ()=> { canvas.style.display = 'block'; });
+      // If video source is still the default demo, keep canvas lightly underneath to enrich the look
+      setTimeout(()=>{ if(video.readyState < 2){ canvas.style.opacity = '1'; } else { canvas.style.display = 'none'; } }, 900);
+    })();
+
+  </script>
+</body>
+</html>
